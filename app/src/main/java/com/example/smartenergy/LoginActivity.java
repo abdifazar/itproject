@@ -10,10 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText emailInput, passwordInput;
-    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
-        loginButton = findViewById(R.id.loginButton);
+        Button loginButton = findViewById(R.id.loginButton);
 
         loginButton.setOnClickListener(v -> attemptLogin());
     }
@@ -62,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(LoginActivity.this, "Login berhasil: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Login berhasil: " + Objects.requireNonNull(user).getEmail(), Toast.LENGTH_SHORT).show();
                         goToHome();
                     } else {
                         // Jika login gagal, coba daftar akun baru
@@ -76,10 +77,10 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(registerTask -> {
                     if (registerTask.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(LoginActivity.this, "Akun dibuat dan login: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Akun dibuat dan login: " + Objects.requireNonNull(user).getEmail(), Toast.LENGTH_SHORT).show();
                         goToHome();
                     } else {
-                        Toast.makeText(LoginActivity.this, "Gagal login/daftar: " + registerTask.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, "Gagal login/daftar: " + Objects.requireNonNull(registerTask.getException()).getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
